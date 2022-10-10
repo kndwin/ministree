@@ -9,7 +9,12 @@
     "expo": "*",
     "react-native-svg": "*",
     "react-native-web": "*",
-    "classname-variants": "^1.2.1"
+    "classname-variants": "^1.2.1",
+    "@nrwl/expo": "*",
+    "@expo/metro-config": "*",
+    "react": "*",
+    "clsx": "*",
+    "nativewind": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/mobile-expo/",

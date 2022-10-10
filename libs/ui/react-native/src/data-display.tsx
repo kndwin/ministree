@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { View, ViewProps } from 'react-native';
 import { styled } from 'nativewind';
-import {  variantProps, VariantPropsOf } from '.';
+import { variantProps, VariantPropsOf } from '.';
 
 // BOX
 type TTailwindProps = {
@@ -11,10 +11,10 @@ type TTailwindProps = {
 
 const StyledView = styled(View);
 const boxVariantProps = variantProps({
-  base: "",
+  base: '',
   variants: {
     center: {
-      true: "flex items-center justify-center",
+      true: 'flex items-center justify-center',
     },
   },
 });
@@ -26,7 +26,10 @@ export function Box({
   ...props
 }: ViewProps & TTailwindProps & { center?: boolean }) {
   return (
-    <StyledView tw={clsx(classes(variantProps), tw, className)} {...props}>
+    <StyledView
+      tw={clsx(boxVariantProps(props).className, tw, className)}
+      {...props}
+    >
       {children}
     </StyledView>
   );

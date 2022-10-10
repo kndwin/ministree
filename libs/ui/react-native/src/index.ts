@@ -137,10 +137,39 @@ export declare type VariantOptions<
 export declare type Simplify<T> = {
   [K in keyof T]: T[K];
 };
-export declare function variants<
+export function variants<
   C extends VariantsConfig<V>,
   V extends Variants = C['variants']
->(config: Simplify<C>): (props: VariantOptions<C>) => string;
+>(config: Simplify<C>) {
+  const { base, variants, compoundVariants, defaultVariants } = config;
+
+  const isBooleanVariant = (name: keyof V) => {
+    const v = variants?.[name];
+    return v && ('false' in v || 'true' in v);
+  };
+
+  return (props: VariantOptions<C>) => {
+    const res = [base];
+
+    const getSelected = (name: keyof V) =>
+      (props as any)[name] ??
+      defaultVariants?.[name] ??
+      (isBooleanVariant(name) ? false : undefined);
+
+    for (let name in variants) {
+      const selected = getSelected(name);
+      if (selected !== undefined) res.push(variants[name]?.[selected]);
+    }
+
+    for (let { variants, className } of compoundVariants ?? []) {
+      const isSelected = (name: string) => getSelected(name) === variants[name];
+      if (Object.keys(variants).every(isSelected)) {
+        res.push(className);
+      }
+    }
+    return res.filter(Boolean).join(' ');
+  };
+}
 
 /**
  * Utility type to infer the first argument of a variantProps function.
