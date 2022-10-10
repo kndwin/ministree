@@ -1,0 +1,18 @@
+{
+  "name": "mobile-expo",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-native": "*",
+    "@testing-library/react-native": "*",
+    "react-native": "*",
+    "expo": "*",
+    "react-native-svg": "*",
+    "react-native-web": "*",
+    "classname-variants": "^1.2.1"
+  },
+  "scripts": {
+    "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/mobile-expo/",
+    "postinstall": "rm -r node_modules && cd ../../ && npm install && npx nx sync-deps mobile-expo && npx nx ensure-symlink mobile-expo"
+  }
+}

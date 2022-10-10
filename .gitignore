@@ -6,7 +6,7 @@
 /out-tsc
 
 # dependencies
-node_modules
+node_modules/
 
 # IDEs and editors
 /.idea
@@ -40,3 +40,21 @@ Thumbs.db
 
 # Next.js
 .next
+
+# Expo
+node_modules/
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+
+# dev
+tags*
+.ctags
