@@ -1,31 +1,31 @@
-import * as React from "react";
-import { variantProps, VariantPropsOf } from "classname-variants/react";
-import clsx from "clsx";
-import { ElementProps } from ".";
+import * as React from 'react';
+import { variantProps, VariantPropsOf } from 'classname-variants/react';
+import clsx from 'clsx';
+import { ElementProps } from '.';
 
 // BOX
 
 const boxVariantProps = variantProps({
-  base: "",
+  base: '',
   variants: {
     center: {
-      true: "flex items-center justify-center",
+      true: 'flex items-center justify-center',
     },
   },
 });
 
-export function Box<T extends React.ElementType = "div">({
+export function Box<T extends React.ElementType = 'div'>({
   as,
   tw,
   ...props
 }: ElementProps<T> &
   VariantPropsOf<typeof boxVariantProps> &
   Omit<React.ComponentPropsWithoutRef<T>, keyof ElementProps<T>>) {
-  const Component = as ?? "div";
+  const Component = as ?? 'div';
   return (
     <Component
       {...boxVariantProps(props)}
-      className={clsx(boxVariantProps(props).className, tw)}
+      className={clsx(boxVariantProps(props).className, ...[].concat(tw))}
     />
   );
 }
@@ -33,37 +33,31 @@ export function Box<T extends React.ElementType = "div">({
 // TEXT
 
 const textVariantProps = variantProps({
-  base: "",
+  base: '',
   variants: {
-    b: { true: "font-bold" },
-    size: {
-      sm: "text-sm",
-      md: "text-base",
-      lg: "text-lg",
+    b: { true: 'font-bold' },
+    color: {
+      dark: 'text-stone-900 dark:text-stone-200',
+      light: 'text-stone-100 ',
     },
-		color: {
-			dark: "text-stone-900 dark:text-stone-100",
-			light: "text-stone-100 "
-		}
   },
   defaultVariants: {
-    size: "sm",
-		color: "dark"
+    color: 'dark',
   },
 });
 
-export function Text<T extends React.ElementType = "p">({
+export function Text<T extends React.ElementType = 'p'>({
   as,
-  tw,
+  tw = [],
   ...props
 }: ElementProps<T> &
   VariantPropsOf<typeof textVariantProps> &
   Omit<React.ComponentPropsWithoutRef<T>, keyof ElementProps<T>>) {
-  const Component = as ?? "p";
+  const Component = as ?? 'p';
   return (
     <Component
       {...textVariantProps(props)}
-      className={clsx(textVariantProps(props).className, tw)}
+      className={clsx(textVariantProps(props).className, ...[].concat(tw))}
     />
   );
 }
@@ -71,29 +65,27 @@ export function Text<T extends React.ElementType = "p">({
 // Avatar
 
 const avatarVariantProps = variantProps({
-  base: clsx(
-		`rounded-full bg-stone-100 ring-2 ring-stone-300`
-	),
+  base: clsx(`rounded-full bg-stone-100 ring-2 ring-stone-300`),
   variants: {
-		size: {
-			sm: "w-8 h-8", 
-			md: "w-10 h-10", 
-			lg: "w-12 h-12"
-		}
+    size: {
+      sm: 'w-8 h-8',
+      md: 'w-12 h-12',
+      lg: 'w-16 h-16',
+    },
   },
-	defaultVariants: {
-		size: "md"
-	}
+  defaultVariants: {
+    size: 'md',
+  },
 });
 
-export function Avatar<T extends React.ElementType = "img">({
+export function Avatar<T extends React.ElementType = 'img'>({
   as,
   tw,
   ...props
 }: ElementProps<T> &
-  VariantPropsOf<typeof AvatarVariantProps> &
+  VariantPropsOf<typeof avatarVariantProps> &
   Omit<React.ComponentPropsWithoutRef<T>, keyof ElementProps<T>>) {
-  const Component = as ?? "img";
+  const Component = as ?? 'img';
   return (
     <Component
       {...avatarVariantProps(props)}

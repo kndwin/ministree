@@ -1,13 +1,14 @@
 import clsx from 'clsx';
-import { View, ViewProps, Text as RNText, TextProps } from 'react-native';
+import {
+  View,
+  ViewProps,
+  Text as RNText,
+  TextProps as RNTextProps,
+} from 'react-native';
 import { styled } from 'nativewind';
-import { variantProps, VariantPropsOf } from '.';
+import { variantProps, VariantPropsOf, TTailwindProps } from './styled';
 
 // BOX
-type TTailwindProps = {
-  tw?: string;
-  className?: string;
-};
 
 const StyledView = styled(View);
 const boxVariantProps = variantProps({
@@ -38,7 +39,7 @@ export function Box({
 // TEXT
 const StyledText = styled(RNText);
 const textVariantProps = variantProps({
-  base: 'text-stone-900',
+  base: '',
   variants: {
     b: { true: 'font-bold' },
     size: {
@@ -47,7 +48,7 @@ const textVariantProps = variantProps({
       lg: 'text-lg',
     },
     color: {
-      dark: 'text-stone-900 dark:text-stone-100',
+      dark: 'text-stone-900 dark:text-stone-200',
       light: 'text-stone-100',
     },
   },
@@ -57,17 +58,14 @@ const textVariantProps = variantProps({
   },
 });
 
-export function Text({
-  tw,
-  children,
-  className,
-  ...props
-}: TextProps & TTailwindProps & VariantPropsOf<typeof textVariantProps>) {
+export type TextProps = RNTextProps &
+  TTailwindProps &
+  VariantPropsOf<typeof textVariantProps>;
+
+export function Text({ tw, children, className, ...props }: TextProps) {
+  const classes = clsx(className, tw, textVariantProps(props).className);
   return (
-    <StyledText
-      tw={clsx(textVariantProps(props).className, tw, className)}
-      {...props}
-    >
+    <StyledText tw={classes} {...props}>
       {children}
     </StyledText>
   );

@@ -1,48 +1,58 @@
-import { styled, Box, Text, Button, TextField } from '@minis/ui/react';
+import { styled, Box, Text, Button, TextField, ScrollArea } from '@ui/react';
 import { HiPlus } from 'react-icons/hi';
-import { Layout } from 'apps/web-nextjs/features/layout';
-
-const t = {
-  welcome: 'Notes',
-};
+import { Layout, getLayout } from 'web/common/ui/layout';
+import { faker } from '@snaplet/copycat';
+import clsx from 'clsx';
 
 export default function NotesPage() {
   return (
-    <Layout>
-      <Layout.NavSidebar />
-
-      <Box tw="flex-1 flex flex-col">
-        <Layout.Header
-          leftSection={
-            <Box center tw="bg-stone-300 px-2 py-1 rounded dark:bg-stone-700">
-              <Text b>{t.welcome}</Text>
-            </Box>
-          }
-        />
-        <Layout.Main>
-          <FolderTree />
-          <Note />
-        </Layout.Main>
-      </Box>
-    </Layout>
+    <Layout.Main>
+      <FolderTree />
+      <Note />
+    </Layout.Main>
   );
 }
+
+NotesPage.getLayout = getLayout;
+
+const files = Array.from(Array(30).keys()).map((index) => ({
+  id: `file-${index}`,
+  title: faker.random.words(5),
+}));
 
 const FolderTree = () => {
   return (
     <StyledFolderTreeContainer>
-      <TextField tw="mb-4" placeholder="Search..." />
-
-      <Button tw="w-fit" color="light" size="icon">
-        <HiPlus />
-      </Button>
+      <ScrollArea className={clsx('max-h-[calc(100vh-80px)]')}>
+        <Box tw="w-full h-fit flex items-center gap-4 mb-4">
+          <TextField placeholder="Search..." />
+          <Button color="light" size="icon">
+            <HiPlus />
+          </Button>
+        </Box>
+        <ScrollArea.Viewport className="p-0 flex flex-col gap-4">
+          {files.map((file) => (
+            <StyledFileContainer key={file.id}>
+              <Text className="font-bold">{file.title}</Text>
+            </StyledFileContainer>
+          ))}
+        </ScrollArea.Viewport>
+        <ScrollArea.Scrollbar orientation="vertical">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+      </ScrollArea>
     </StyledFolderTreeContainer>
   );
 };
 
+const StyledFileContainer = styled(
+  Box,
+  `px-2 py-4 rounded-lg hover:bg-stone-200`
+);
+
 const StyledFolderTreeContainer = styled(
   'div',
-  `flex flex-col p-4 border-r border-r-stone-400 w-72`
+  `flex flex-col border-r border-r-stone-400 w-72`
 );
 
 const Note = () => {

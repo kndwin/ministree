@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { styled } from 'classname-variants/react';
 import { atom, useAtom } from 'jotai';
 import { Transition } from '@headlessui/react';
-import { ElementProps } from '.';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as ToastPrimitive from '@radix-ui/react-toast';
@@ -25,13 +24,13 @@ const StyledTooltipContent = styled(TooltipPrimitive.Content, {
     'radix-side-bottom:fade-in-25',
     'radix-side-left:fade-in-25',
     'inline-flex items-center rounded-md px-2 py-1',
-    'bg-stone-700 text-stone-100',
+    'bg-stone-800 text-stone-100 text-sm',
     'border border-stone-600'
   ),
   variants: {},
 });
 
-export let Tooltip = Object.assign(TooltipRoot, {
+export const Tooltip = Object.assign(TooltipRoot, {
   Provider: TooltipProvider,
   Trigger: TooltipTrigger,
   Content: StyledTooltipContent,
@@ -142,7 +141,7 @@ export const drawerTransitionProps = {
   },
 };
 
-export let Drawer = Object.assign(DrawerRoot, {
+export const Drawer = Object.assign(DrawerRoot, {
   Trigger: DrawerTrigger,
   Content: StyledDrawerContent,
   Overlay: StyledDialogOverlay,
@@ -229,7 +228,7 @@ export const useToast = () => {
   };
 };
 
-export let Toast = Object.assign(ToastRoot, {
+export const Toast = Object.assign(ToastRoot, {
   Provider: ToastProvider,
   Title: ToastTitle,
   Description: ToastDescription,
@@ -430,7 +429,7 @@ export const Popover = Object.assign(PopoverRoot, {
 const ScrollAreaRoot = styled(ScrollAreaPrimitive.Root, {
   base: clsx(
     'focus:outline-none focus:ring-2 focus:ring-stone-200',
-    'dark:focus:ring-stone-800 p-4 overflow-hidden w-full h-full '
+    'dark:focus:ring-stone-800 p-2 overflow-hidden w-full h-full '
   ),
   variants: {},
 });
@@ -448,8 +447,8 @@ const StyledScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
 });
 const StyledScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
   base: clsx(
-    'flex select-none touch-none p-[2px] bg-stone-200',
-		'dark:bg-stone-700', 
+    'flex select-none touch-none p-[2px] bg-stone-100',
+    'dark:bg-stone-900',
     'radix-orientation-vertical:w-[10px]',
     'radix-orientation-horizontal:h-[10px]',
     'radix-orientation-horizontal:flex-col'
@@ -459,7 +458,7 @@ const StyledScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
 
 const StyledViewport = styled(ScrollAreaPrimitive.Viewport, {
   base: clsx(
-    'w-full h-full rounded-[inherit] p-2',
+    'w-full h-full rounded-[inherit]',
     'focus:outline-none focus:ring-2 focus:ring-stone-200',
     'dark:focus:ring-stone-800'
   ),
@@ -481,7 +480,8 @@ const HoverCardContent = styled(HoverCardPrimitive.Content, {
     'radix-side-bottom:animate-in radix-side-bottom:fade-in',
     'max-w-md rounded-lg p-4 md:w-full',
     'bg-white dark:bg-stone-800',
-    'focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75'
+    'focus:outline-none focus-visible:ring',
+    'focus-visible:ring-stone-500 focus-visible:ring-opacity-75'
   ),
   variants: {},
 });

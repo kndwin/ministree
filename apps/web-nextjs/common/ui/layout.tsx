@@ -8,7 +8,7 @@ import {
   ScrollArea,
   LogoIcon,
   Avatar,
-} from '@minis/ui/react';
+} from '@ui/react';
 import {
   HiSun,
   HiMoon,
@@ -94,15 +94,13 @@ const teams = [
 
 const StyledHeader = styled(
   'header',
-  `w-full py-4 flex justify-between px-2
-	border-b-2 border-stone-200 dark:border-stone-700
-`
+  `w-full py-4 flex justify-between px-2 border-b-2 border-stone-200 dark:border-stone-700`
 );
 const StyledNavSidebar = styled(
   'nav',
   `w-40 border-stone-200 border-r-2
 	h-full min-h-screen p-4 flex flex-col items-center gap-4
-	dark:border-stone-700
+	dark:border-stone-700 z-20
 `
 );
 const StyledLayoutMain = styled(
@@ -111,8 +109,7 @@ const StyledLayoutMain = styled(
 );
 const StyledLayoutContainer = styled(
   'div',
-  `w-full h-full min-h-screen bg-stone-100
-	dark:bg-stone-900 flex
+  `w-full h-full min-h-screen bg-stone-100 dark:bg-stone-900 flex
 `
 );
 
@@ -125,7 +122,7 @@ const defaultRightSection = (
   <Box tw="flex items-center gap-2">
     <Box tw="flex -space-x-2 w-fit">
       {avatars.map((src, index) => (
-        <Avatar className={clsx(index > 3 && 'brightness-50')} src={src} />
+        <Avatar key={src} src={src} tw={index > 3 && 'brightness-50'} />
       ))}
     </Box>
     <IconButtonToggleTheme />
@@ -154,48 +151,47 @@ const LayoutHeader = ({
               <Text>{selectedTeam.label}</Text>
               <HiChevronDown />
             </Popover.Trigger>
-            <Popover.Content
-              sideOffset={4}
-              side="bottom"
-              align="start"
-              className="z-10"
-            >
-              <ScrollArea className={clsx('max-h-[20em]')}>
-                <ScrollArea.Viewport
-                  className={clsx(
-                    'w-full h-full rounded-[inherit] p-2',
-                    'focus:outline-none focus:ring-2 focus:ring-stone-200',
-                    'dark:focus:ring-stone-800'
-                  )}
-                >
-                  <Box className="flex flex-col gap-2">
-                    {teams.map((team) => (
-                      <Popover.Close asChild>
-                        <Button
-                          color={
-                            selectedTeam.id === team.id
-                              ? 'light'
-                              : 'transparent'
-                          }
-                          onClick={() => setSelectedTeam(team)}
-                          className="w-full"
-                          key={team.id}
-                        >
-                          {team.label}
-                        </Button>
-                      </Popover.Close>
-                    ))}
-                    <Button color="dark" className="w-full">
-                      Add team
-                    </Button>
-                  </Box>
-                </ScrollArea.Viewport>
-                <ScrollArea.Scrollbar orientation="vertical">
-                  <ScrollArea.Thumb />
-                </ScrollArea.Scrollbar>
-              </ScrollArea>
-            </Popover.Content>
+            <Popover.Portal>
+              <Popover.Content
+                sideOffset={4}
+                side="bottom"
+                align="start"
+                className="z-50 p-0"
+              >
+                <ScrollArea className={clsx('max-h-[20em] p-0')}>
+                  <ScrollArea.Viewport
+                    className={clsx(
+                      'w-full h-full rounded-[inherit]',
+                      'focus:outline-none focus:ring-2 focus:ring-stone-200',
+                      'dark:focus:ring-stone-800 p-0'
+                    )}
+                  >
+                    <Box className="flex flex-col gap-2">
+                      {teams.map((team) => (
+                        <Popover.Close asChild key={team.id}>
+                          <Button
+                            color={
+                              selectedTeam.id === team.id
+                                ? 'light'
+                                : 'transparent'
+                            }
+                            onClick={() => setSelectedTeam(team)}
+                            className="w-full"
+                          >
+                            {team.label}
+                          </Button>
+                        </Popover.Close>
+                      ))}
+                    </Box>
+                  </ScrollArea.Viewport>
+                  <ScrollArea.Scrollbar orientation="vertical">
+                    <ScrollArea.Thumb />
+                  </ScrollArea.Scrollbar>
+                </ScrollArea>
+              </Popover.Content>
+            </Popover.Portal>
           </Popover>
+          <Button size="xs">Add team</Button>
         </Box>
         {leftSection}
       </Box>
@@ -216,6 +212,7 @@ export const navOptions = [
     href: '/home/chat',
     icon: <HiOutlineChat />,
   },
+  /*
   {
     label: 'Notes',
     href: '/home/notes',
@@ -226,7 +223,13 @@ export const navOptions = [
     href: '/home/roster',
     icon: <HiOutlineCalendar />,
   },
+	 */
 ];
+
+const StyledIconContainer = styled(
+  Box,
+  'p-2 rounded-full bg-stone-200 w-fit dark:bg-stone-800'
+);
 
 const LayoutNavSidebar = () => {
   const router = useRouter();
@@ -243,7 +246,7 @@ const LayoutNavSidebar = () => {
               tw={clsx('w-full font-bold items-left')}
               color={router.pathname === option.href ? 'light' : 'transparent'}
             >
-              {option.icon}
+              <StyledIconContainer>{option.icon}</StyledIconContainer>
               {option.label}
             </Button>
           </Link>
@@ -253,7 +256,8 @@ const LayoutNavSidebar = () => {
       <Popover>
         <Popover.Trigger
           className={clsx(
-            'flex items-center gap-2 bg-stone-200 rounded hover:bg-stone-300 pr-4 pl-2',
+            'flex items-center gap-2 bg-stone-200',
+            'rounded hover:bg-stone-300 pr-4 pl-2',
             'dark:bg-stone-800 py-2'
           )}
         >
@@ -266,7 +270,7 @@ const LayoutNavSidebar = () => {
           sideOffset={4}
           side="top"
           align="start"
-          className="z-10"
+          className="z-50"
         >
           <ButtonSignOut />
         </Popover.Content>
@@ -280,3 +284,13 @@ export const Layout = Object.assign(StyledLayoutContainer, {
   Header: LayoutHeader,
   Main: StyledLayoutMain,
 });
+
+export const getLayout = (page) => (
+  <Layout>
+    <Layout.NavSidebar />
+    <Box tw="flex-1 flex flex-col">
+      <Layout.Header />
+      {page}
+    </Box>
+  </Layout>
+);

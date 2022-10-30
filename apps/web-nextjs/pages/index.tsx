@@ -1,16 +1,9 @@
-import {
-  styled,
-  Box,
-  Text,
-  Button,
-  LogoIcon,
-  HoverCard,
-} from '@minis/ui/react';
+import { styled, Box, Text, Button, LogoIcon, HoverCard } from '@ui/react';
 import {
   ButtonSignInGoogle,
   IconButtonToggleTheme,
   navOptions,
-} from 'apps/web-nextjs/features/layout';
+} from 'web/common/ui/layout';
 
 const t = {
   title: 'ministree',
@@ -71,7 +64,7 @@ export default function LandingPage() {
 
         <FeaturesContainer>
           {navOptions.map((option) => (
-            <HoverCard openDelay={100}>
+            <HoverCard key={option.href} openDelay={100}>
               <HoverCard.Trigger>
                 <FeatureContainer>
                   {option.icon}

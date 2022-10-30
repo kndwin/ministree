@@ -30,9 +30,9 @@ const buttonVariantProps = variantProps({
         'dark:bg-stone-800 dark:border-stone-500 dark:border'
       ),
       light: clsx(
-				'bg-stone-200 text-stone-900 border-stone-200 hover:bg-stone-300',
+        'bg-stone-200 text-stone-900 border-stone-200 hover:bg-stone-300',
         'dark:bg-stone-800 dark:text-stone-100 dark:border-stone-500',
-				'dark:hover:bg-stone-700'
+        'dark:hover:bg-stone-700'
       ),
       rose: 'bg-rose-900 text-rose-100',
     },

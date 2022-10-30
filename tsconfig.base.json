@@ -15,8 +15,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@minis/ui/react": ["libs/ui/react/src/index.ts"],
-      "@minis/ui/react-native": ["libs/ui/react-native/src/index.ts"]
+      "mobile/*": ["apps/mobile-expo/src/*"],
+      "web/*": ["apps/web-nextjs/*"],
+      "@ui/react": ["libs/ui/react/src/index.ts"],
+      "@ui/react-native": ["libs/ui/react-native/src/index.ts"],
+      "@db": ["libs/db/src/index.ts"],
+      "@features/chat": ["libs/features/chat/src/index.ts"],
+      "@features/feed": ["libs/features/feed/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

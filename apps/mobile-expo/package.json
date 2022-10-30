@@ -5,19 +5,35 @@
   "dependencies": {
     "@testing-library/jest-native": "*",
     "@testing-library/react-native": "*",
-    "react-native": "*",
+    "react-native": "0.69.6",
     "expo": "*",
     "react-native-svg": "*",
     "react-native-web": "*",
-    "classname-variants": "^1.2.1",
+    "classname-variants": "*",
     "@nrwl/expo": "*",
     "@expo/metro-config": "*",
-    "react": "*",
+    "react": "18.0.0",
     "clsx": "*",
-    "nativewind": "*"
+    "nativewind": "*",
+    "expo-system-ui": "*",
+    "@react-navigation/native-stack": "*",
+    "react-native-safe-area-context": "*",
+    "zustand": "*",
+    "expo-status-bar": "*",
+    "tailwindcss": "*",
+    "@react-navigation/native": "*",
+    "@react-navigation/bottom-tabs": "*",
+    "expo-splash-screen": "~0.16.2",
+    "react-dom": "18.0.0"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/mobile-expo/",
-    "postinstall": "rm -r node_modules && cd ../../ && npm install && npx nx sync-deps mobile-expo && npx nx ensure-symlink mobile-expo"
+    "postinstall": "rm -r node_modules && cd ../../ && npm install && npx nx sync-deps mobile-expo && npx nx ensure-symlink mobile-expo",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9"
   }
 }

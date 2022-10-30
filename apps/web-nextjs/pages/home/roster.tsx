@@ -7,10 +7,12 @@ import {
   format,
   addMonths,
   subMonths,
+  isToday,
 } from 'date-fns';
-import { tw, Box, Text, Button } from '@minis/ui/react';
+import { styled, Box, Text, Button } from '@ui/react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import { Layout } from 'apps/web-nextjs/features/layout';
+import { Layout, getLayout } from 'apps/web-nextjs/common/ui/layout';
+import clsx from 'clsx';
 
 const t = {
   welcome: 'Roster',
@@ -18,24 +20,12 @@ const t = {
 
 export default function RosterPage() {
   return (
-    <Layout>
-      <Layout.NavSidebar />
-
-      <Box tw="flex-1 flex flex-col">
-        <Layout.Header
-          leftSection={
-            <Box center tw="bg-stone-300 px-2 py-1 rounded dark:bg-stone-700">
-              <Text b>{t.welcome}</Text>
-            </Box>
-          }
-        />
-        <Layout.Main>
-          <Calendar />
-        </Layout.Main>
-      </Box>
-    </Layout>
+    <Layout.Main>
+      <Calendar />
+    </Layout.Main>
   );
 }
+RosterPage.getLayout = getLayout;
 
 const MAX_DAYS_IN_MONTH_VIEW = 7 * 5;
 const monthlyHeaders = [
@@ -88,38 +78,50 @@ export const Calendar = () => {
           <HiChevronRight />
         </Button>
       </Box>
-      <Box tw="border border-black grid grid-cols-7 w-full h-fit">
+      <StyledBorderedBox tw="grid grid-cols-7 w-full h-fit">
         {monthlyHeaders.map((day) => (
-          <Box tw="w-full h-8 border border-stone-500 p-2 border-b-0">
+          <StyledBorderedBox key={day} tw="w-full h-8 p-2 border-b-0">
             <Text b tw="">
               {day}
             </Text>
-          </Box>
+          </StyledBorderedBox>
         ))}
-      </Box>
-      <Box tw="border border-black grid grid-cols-7 grid-rows-5 w-full h-fit border-t-0">
+      </StyledBorderedBox>
+      <Box tw="grid grid-cols-7 grid-rows-5 w-full h-fit border-t-0">
         {prependEmptyDays.map((index) => (
-          <MonthlyDayBox />
+          <MonthlyDayBox key={`prepend-${index}`} />
         ))}
         {daysInCurrentMonth.map((date) => (
-          <MonthlyDayBox day={date} />
+          <MonthlyDayBox key={date.getUTCMilliseconds()} day={date} />
         ))}
         {appendEmptyDays.map((index) => (
-          <MonthlyDayBox />
+          <MonthlyDayBox key={`append-${index}`} />
         ))}
       </Box>
     </Box>
   );
 };
 
+const StyledBorderedBox = styled(
+  Box,
+  'border border-stone-200 dark:border-stone-800'
+);
+
 const MonthlyDayBox = ({ day }: { day?: Date }) => {
   return (
-    <Box tw="w-full h-20 border border-stone-500 p-2">
+    <StyledBorderedBox
+      tw={['w-full h-20 p-2', !day && 'bg-stone-300 dark:bg-stone-700']}
+    >
       {Boolean(day) && (
-        <Text b tw="">
+        <Text
+          tw={[
+            isToday(day) && 'text-stone-100 bg-rose-200 dark:text-stone-900',
+            'w-fit rounded text-xs p-1 font-bold',
+          ]}
+        >
           {format(day, 'do')}
         </Text>
       )}
-    </Box>
+    </StyledBorderedBox>
   );
 };

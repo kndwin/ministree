@@ -1,17 +1,15 @@
 import clsx from 'clsx';
 import { faker } from '@snaplet/copycat';
-
 import {
-styled, 
+  styled,
   Box,
   Text,
   Button,
-  Popover,
   TextField,
   Avatar,
   ScrollArea,
-} from '@minis/ui/react';
-import { Layout } from 'apps/web-nextjs/features/layout';
+} from '@ui/react';
+import { Layout, getLayout } from 'web/common/ui/layout';
 
 const t = {
   welcome: 'Home',
@@ -21,28 +19,15 @@ const t = {
 
 export default function HomePage() {
   return (
-    <Layout>
-      <Layout.NavSidebar />
-
-      <Box tw="flex-1 flex flex-col">
-        <Layout.Header
-          leftSection={
-            <Box center tw="bg-stone-300 px-2 py-1 rounded dark:bg-stone-700">
-              <Text b>{t.welcome}</Text>
-            </Box>
-          }
-        />
-        <Layout.Main>
-          <LatestUpdates />
-          <AnnouncementBoard />
-        </Layout.Main>
-      </Box>
-    </Layout>
+    <Layout.Main>
+      <AnnouncementBoard />
+    </Layout.Main>
   );
 }
 
-const UPDATE_LENGTH = 30;
-const updates = Array.from(Array(UPDATE_LENGTH).keys()).map((index) => ({
+HomePage.getLayout = getLayout;
+
+const updates = Array.from(Array(30).keys()).map((index) => ({
   id: `update-${index}`,
   title: `${faker.word.verb()} ${faker.word.noun()}`,
   createdAt: new Date(),
@@ -53,10 +38,8 @@ const LatestUpdates = () => {
   const today = new Date();
   return (
     <StyledLatestUpdateContainer>
-      <Text b tw="m-4 mb-0">
-        {t.latestUpdate}
-      </Text>
-      <ScrollArea className={clsx('max-h-[calc(100vh-114px)]')}>
+      <ScrollArea className={clsx('max-h-[calc(100vh-80px)]')}>
+        <Text tw="mb-4 ml-2 text-xl font-black">{t.latestUpdate}</Text>
         <ScrollArea.Viewport>
           <StyledUpdatesContainer>
             <Text tw="text-[10pt]">{today.toDateString()}</Text>
@@ -76,106 +59,52 @@ const LatestUpdates = () => {
   );
 };
 
-const StyledLatestUpdateContainer = styled('div',`
-	h-full w-72 border-r-2 border-stone-200
+const StyledLatestUpdateContainer = styled(
+  'div',
+  `h-full w-72 border-r-2 border-stone-200
 	dark:border-stone-700
-`);
-const StyledUpdatesContainer = styled('div',`flex flex-col gap-4`);
-const StyledUpdateContainer = styled('div',`py-2 hover:bg-stone-200
+`
+);
+const StyledUpdatesContainer = styled('div', `flex flex-col gap-4`);
+const StyledUpdateContainer = styled(
+  'div',
+  `py-2 hover:bg-stone-200
 	rounded ring-1 ring-stone-200 px-3 flex flex-col gap-2
 	hover:dark:bg-stone-800 dark:ring-stone-700
-`);
-const StyledByUser = styled('p',`py-1 px-2 rounded bg-stone-200 w-fit text-xs
+`
+);
+const StyledByUser = styled(
+  'p',
+  `py-1 px-2 rounded bg-stone-200 w-fit text-xs
 	dark:bg-stone-800
-`);
+`
+);
 
-const notifications = [
-  {
-    id: 'notifications-1',
-    title: '🎉 40 days to go!',
-    description: 'Make sure to do this!',
-    comments: [
-      {
-        id: 'comment-1',
-        by: {
-          id: 'person-1',
-          img: 'https://avatars.dicebear.com/api/open-peeps/1.svg',
-          name: 'Kevin',
-        },
-        content: 'This is great!',
-        createdAt: new Date(),
-      },
-      {
-        id: 'comment-2',
-        by: {
-          id: 'person-2',
-          img: 'https://avatars.dicebear.com/api/open-peeps/2.svg',
-          name: 'Tina',
-        },
-        content: 'This is great!',
-        createdAt: new Date(),
-      },
-    ],
-  },
-  {
-    id: 'notifications-2',
-    title: 'Reminder',
-    description: 'Make sure to do this!',
-    comments: [],
-  },
-  {
-    id: 'notifications-3',
-    title: 'Reminder',
-    description: 'Make sure to do this!',
-    comments: [],
-  },
-  {
-    id: 'notifications-4',
-    title: 'Reminder',
-    description: 'Make sure to do this!',
-    comments: [],
-  },
-  {
-    id: 'notifications-5',
-    title: 'Reminder',
-    description: 'Make sure to do this!',
-    comments: [],
-  },
-];
+const annoucements = Array.from(Array(30).keys()).map((index) => ({
+  id: `annoucement-${index}`,
+  title: `${faker.word.verb()} ${faker.word.noun()}`,
+  description: faker.lorem.paragraph(),
+  createdAt: new Date(),
+  by: faker.name.firstName(),
+  comments: Array.from(Array(10).keys()).map((index) => ({
+    content: faker.lorem.sentence(),
+    id: `${faker.word.adverb()}-${index}`,
+    by: {
+      name: faker.name.findName(),
+      img: `https://avatars.dicebear.com/api/open-peeps/${faker.word.noun()}${index}.svg`,
+    },
+  })),
+}));
 
 const AnnouncementBoard = () => {
   return (
     <StyledNotifcationBoardContainer>
-      <Text b tw="mb-0 m-4 text-2xl">
-        {t.annoucementTitle}
-      </Text>
-      <ScrollArea className={clsx('max-h-[calc(100vh-126px)]')}>
+      <ScrollArea className={clsx('max-h-[calc(100vh-80px)]')}>
+        <Text tw="mb-4 ml-2 text-xl font-black">{t.annoucementTitle}</Text>
         <ScrollArea.Viewport>
           <StyledAnnouncementsContainer>
-            {notifications.map((notification) => (
-              <StyledAnnouncementContainer key={notification.id}>
-                <Text b tw="text-2xl">
-                  {notification.title}
-                </Text>
-                <Text tw="mb-6 mt-1">{notification.description}</Text>
-
-                <Text b>Comments</Text>
-                <StyledCommentsContainer>
-                  {notification.comments.map((comment) => (
-                    <StyledCommentContainer key={comment.id}>
-                      <Avatar src={comment.by.img} />
-                      <Box>
-                        <Text b>{comment.by.name}</Text>
-                        <Text>{comment.content}</Text>
-                      </Box>
-                    </StyledCommentContainer>
-                  ))}
-                  <Box tw="w-full flex gap-4">
-                    <TextField tw="w-full" placeholder="Add a comment!" />
-                    <Button>Send</Button>
-                  </Box>
-                </StyledCommentsContainer>
-              </StyledAnnouncementContainer>
+            {annoucements.map((a) => (
+              <Annoucement annoucement={a} key={a.id} />
             ))}
           </StyledAnnouncementsContainer>
         </ScrollArea.Viewport>
@@ -187,12 +116,44 @@ const AnnouncementBoard = () => {
   );
 };
 
+type AnnoucementProps = {
+  annoucement: typeof annoucements[0];
+};
+
+const Annoucement = (props: AnnoucementProps) => {
+  const { annoucement } = props;
+  return (
+    <StyledAnnouncementContainer key={annoucement.id}>
+      <Text b tw="text-2xl">
+        {annoucement.title}
+      </Text>
+      <Text tw="mb-6 mt-1">{annoucement.description}</Text>
+
+      <Text b>Comments</Text>
+      <StyledCommentsContainer>
+        {annoucement.comments.map((comment) => (
+          <StyledCommentContainer key={comment.id}>
+            <Avatar src={comment.by.img} />
+            <Box>
+              <Text b>{comment.by.name}</Text>
+              <Text>{comment.content}</Text>
+            </Box>
+          </StyledCommentContainer>
+        ))}
+        <Box tw="w-full flex gap-4">
+          <TextField tw="w-full" placeholder="Add a comment!" />
+          <Button>Send</Button>
+        </Box>
+      </StyledCommentsContainer>
+    </StyledAnnouncementContainer>
+  );
+};
+
 const StyledNotifcationBoardContainer = styled('div', `flex-1 flex-col`);
 const StyledAnnouncementsContainer = styled('div', `flex flex-col gap-12`);
 const StyledAnnouncementContainer = styled(
   'div',
-  `p-4
-	rounded ring-1 ring-stone-200 flex flex-col gap-2
+  `p-8 rounded ring-1 ring-stone-200 flex flex-col gap-2
 	hover:dark:bg-stone-800 dark:ring-stone-700
 	shadow-md dark:shadow-stone-300 dark:shadow
 `
